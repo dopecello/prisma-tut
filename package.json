@@ -1,0 +1,30 @@
+{
+  "name": "prisma-tut",
+  "version": "1.0.0",
+  "description": "Following along with Web Dev Simplified's tutorial on Prisma so I can code along and have a better context while reading the docs in my own projects!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dopecello/prisma-tut.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dopecello/prisma-tut/issues"
+  },
+  "homepage": "https://github.com/dopecello/prisma-tut#readme",
+  "devDependencies": {
+    "@types/node": "^18.16.3",
+    "nodemon": "^2.0.22",
+    "prisma": "^4.13.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.13.0"
+  }
+}
