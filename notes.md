@@ -113,6 +113,7 @@ from the generated Prisma client:
   - Similar to the previous but can take any parameter and will return the first
     result
 - `findMany()`
+
   - Will find as many parts of matching data as the parameters provide.
   - an interesting `findUnique()`ish thing you can do with this method is:
     ```
@@ -134,11 +135,11 @@ from the generated Prisma client:
     - `equals:`
     - `{where: { name: { equals: "Sally } } }` will get us all the sallys!
     - `not:`
-    - `{where: { name: { not: "Sally } } }` will return all the results that don't
-        contain "sally" in the `name` field
+    - `{where: { name: { not: "Sally } } }` will return all the results that
+      don't contain "sally" in the `name` field
     - `in: []`
     - {where: { name: { in: ["Sally, "Kyle"] } } }` will return all the result
-        that include Sally && Kyle.
+      that include Sally && Kyle.
     - `lt: gt: gte:, lte:`
     - for ints this is useful because they are operators.
     - `contains:`
@@ -149,19 +150,19 @@ from the generated Prisma client:
         where: {
             AND: [{ email: { startsWith: "sally" } }, { name: "Sally" }]
         }
-        ```
+      ```
     - This will return a result that has an email that starts with the letters
-        "sally" AND also assigned the name "Sally". Good for specific filtering.
+      "sally" AND also assigned the name "Sally". Good for specific filtering.
     - `OR:[]`
     - Is the same but doesn't require for both parameters to be `true`
     - `NOT:[]`
-    - It is the opposite of `AND:[]` where it excludes results that return `true`
-        on any of the parameters.
+    - It is the opposite of `AND:[]` where it excludes results that return
+      `true` on any of the parameters.
     - `every: {}, some: {}, + none: {}`
     - You can further filter relationships by using these:
     - `where: { writtenPosts: { every: { title: "Test" } } }`
-    - some would be the equivalent of "truthy" where post can start with test but
-        not deep equal.
+    - some would be the equivalent of "truthy" where post can start with test
+      but not deep equal.
     - `is: {}`
     - useful across different models as shown:
     - ```
@@ -174,13 +175,53 @@ from the generated Prisma client:
             },
         },
         })
-        ```
+      ```
     - From here, primsa will return posts from my `Post` model that have author
-        whose ages are 27. foreign key relationship
+      whose ages are 27. foreign key relationship
     - same flow for `isNot:{}` but the opposite purpose.
 
-
 ## Data Updates
+
+- this operation take the `update()` and `updateMany()` methods and can be
+  represented like this:
+  ```
+      async function main() {
+      const user = await prisma.user.update({
+          where: {
+          email: 'johndoe@gmail.com',
+          },
+          data: {
+          email: 'jonnydoe@gmail.com',
+          },
+      });
+      console.log(user);
+      }
+  ```
+- Note: that objects like `include:{}` and `select:{}` don't work on the `updateMany()` method.
+
+## Data deletion
+
+- Fairly simple stuff. There is `delete()` and `deleteMany()`, and you can use al previous objects like `where:{}` to get down to the bottom of your query. 
+
+## Data connections
+
+- I can use `connect:{}` and `disconnect:{}` in order to attach or detach certain fields.
+- here is an example of a disconnect, which is more interesting to me.
+    ```
+    async function main() {
+        const user = await prisma.user.update({
+            where: {
+                email: "kyle@test.com",
+            },
+            data: {
+                userPreference: {
+                    disconnect: true,
+                },
+            },
+        })
+    }
+    ```
+- In this example, I discconected a user with a unique field modifer, `email:` from another field that is given to all users. So, in the database, all the other users will have `userPreference` as a field, but the user with "kyle@test.com" won't. To confirm this worked, if I used `console.log()` to see what happened in the terminal, the `userPreference:` field will return `null` in the console. 
 
 # Other Notes
 
