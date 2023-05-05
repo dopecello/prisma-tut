@@ -50,6 +50,18 @@ In model `User` the field looks like: `  role Role @default(BASIC)`
 
 
 ---
+# Client Operations
+In this section I go over the types of mutations you can make to the database from the generated Prisma client:
+
+## Data creation
+- `create()`
+    - Takes in an object for one peice of data
+    - can have `select:{}` or `include:{}` objects on them
+- `createMany()`
+    - This takes in an array of objects
+    - When console logging, if gives a count object (ie: `{ count: 2 }` if passing two objects of valid data)
+    - You **CANNOT** pass an `include:{}` or `select:{}` object on this method.
+---
 
 # Other Notes
 - There is an option instead of using `autoincrement()` with type `Int` to make IDs.
@@ -57,3 +69,6 @@ In model `User` the field looks like: `  role Role @default(BASIC)`
 - Block level modifiers are indicated by `@@` symbols at the bottom of a model usually with one line of separation. 
     - Note that in the `Post` model, I used an `@@id([authorId, title])` block modifier
         - This makes a composite id combining these two fields; the combination of them being the "ID" of the post.
+- **Important**: If the intellisense isn't showing up in the script.ts folder, you can `Ctrl + Click` the Prisma method of whatever you are trying to use and load the TypeScript file in the background, usually in the `index.d.ts` file. If you go back to the file after that, all of the intellisense should come back.
+- the `select:{}` and `include:{}` objects are mututally exclusive and cannot be run on the same query.
+- to further debug Primsa stuff using logs you can write `const prisma = new PrismaClient({ log: ["query"] })`
